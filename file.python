@@ -1,0 +1,15 @@
+import pandas as pd
+import numpy
+data = open("MER_accession.txt")
+df = pd.DataFrame(data)
+df1 = df[0].str.split(";", expand=True)
+print(df1)
+#delete a column
+del df1[6]
+del df1[5]
+print(df1)
+df1[0:5]
+#rename columns
+df1.rename(columns={0 :"MER_number", 1 :"Function",2 :"Family", 3 :"Peptidase_unit", 4 :"Source"})
+
+df1.to_csv(r"MER_accession.csv", index=False)
