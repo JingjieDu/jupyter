@@ -13,3 +13,24 @@ df1[0:5]
 df1.rename(columns={0 :"MER_number", 1 :"Function",2 :"Family", 3 :"Peptidase_unit", 4 :"Source"})
 
 df1.to_csv(r"MER_accession.csv", index=False)
+
+
+import pandas as pd 
+  
+# reading csv files 
+data1 = pd.read_csv('MER_accession.csv')
+data1.columns=["MER_number", "Function","Family", "Peptidase_unit", "Source"]
+data2 = pd.read_csv('protease_blastp_output_k11',sep='\t')
+data2.columns=['query_id', 'MER_number','percentage_identical_positions', 'sequence_overlap', 'mismatches', 'gap_openings',	'start_alignment_query', 'end_alignment_query','start_alignment_subject','end_alignment_subject', 'expect_value', 'bit_score']
+
+  
+# using merge function by setting how='left' 
+output2 = pd.merge(data2, data1,  
+                   on='MER_number',  
+                   how='left') 
+  
+# displaying result 
+print(output2) 
+
+df3 = output2[output2['percentage_identical_positions'] >= 60] 
+df3.to_csv(r"protease_functions_k11.csv", index=False)
